@@ -1,0 +1,20 @@
+/*LUIS CASTELLAR CONTENT / COPYRIGHT*/
+
+#include "BulletGamblerGameMode.h"
+#include "GameFramework/GameStateBase.h"
+
+void ABulletGamblerGameMode::PostLogin(APlayerController* NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+
+	int32 NumberOfPlayers = GameState.Get()->PlayerArray.Num();
+	if (NumberOfPlayers > 2)
+	{
+		UWorld* World = GetWorld();
+		if (World)
+		{
+			bUseSeamlessTravel = true;
+			World->ServerTravel("/Game/Maps/L_MainLevel?listen");
+		}
+	}
+}
