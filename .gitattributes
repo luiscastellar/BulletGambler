@@ -16,3 +16,9 @@ Content/ExternalAssets/MonsterForSurvivalGame/**/*.wav filter=lfs diff=lfs merge
 Content/ExternalAssets/MonsterForSurvivalGame/**/*.fbx filter=lfs diff=lfs merge=lfs -text
 Content/ExternalAssets/MonsterForSurvivalGame/**/*.png filter=lfs diff=lfs merge=lfs -text
 Content/ExternalAssets/MonsterForSurvivalGame/**/*.tga filter=lfs diff=lfs merge=lfs -text
+Content/ExternalAssets/RPGTinyFantasyForest/**/*.uasset filter=lfs diff=lfs merge=lfs -text
+Content/ExternalAssets/RPGTinyFantasyForest/**/*.umap filter=lfs diff=lfs merge=lfs -text
+Content/ExternalAssets/RPGTinyFantasyForest/**/*.wav filter=lfs diff=lfs merge=lfs -text
+Content/ExternalAssets/RPGTinyFantasyForest/**/*.fbx filter=lfs diff=lfs merge=lfs -text
+Content/ExternalAssets/RPGTinyFantasyForest/**/*.png filter=lfs diff=lfs merge=lfs -text
+Content/ExternalAssets/RPGTinyFantasyForest/**/*.tga filter=lfs diff=lfs merge=lfs -text
