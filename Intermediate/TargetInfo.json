@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "BulletGambler",
+			"Path": "..\\Source\\BulletGambler.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "BulletGamblerEditor",
+			"Path": "..\\Source\\BulletGamblerEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}
