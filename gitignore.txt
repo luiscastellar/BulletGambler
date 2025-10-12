@@ -1,0 +1,78 @@
+###################################
+# Unreal Engine 5
+###################################
+
+# Project user & cache folders
+DerivedDataCache/
+Saved/
+Intermediate/
+Binaries/
+Build/
+# Allow specific build files (e.g. icons, pak blacklists)
+!Build/*/PakBlacklist*.txt
+!Build/**/*.ico
+
+# Unreal user and solution files
+*.uproject.sln
+*.suo
+*.opensdf
+*.sdf
+*.VC.db
+*.VC.opendb
+*.VC.VC.opendb
+*.log
+*.tlog
+
+# Precompiled asset data
+*_BuiltData.uasset
+
+# Compiled source files and binaries
+*.o
+*.obj
+*.pch
+*.pdb
+*.exe
+*.dll
+*.lib
+*.so
+*.dylib
+*.app
+*.out
+
+# IDE folders
+.vs/
+**/.vs/
+.vscode/
+**/.vscode/
+.idea/
+**/.idea/
+
+# VS temporary files
+*.db
+*.db-wal
+*.db-shm
+*.idb
+*.ipch
+*.aps
+*.ncb
+*.opendb
+*.cachefile
+
+# Xcode (for Mac builds)
+*.xcodeproj
+*.xcworkspace
+
+# Unreal Build Tool and autosave temp files
+*.generated.*
+*.autosave
+
+# Ignore OneDrive or system sync folders
+*.lnk
+*.tmp
+~$*
+Thumbs.db
+Desktop.ini
+
+# Ignore config backup files
+*.bak
+*.backup
