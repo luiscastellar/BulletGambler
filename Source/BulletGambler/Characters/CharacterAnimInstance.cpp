@@ -1,4 +1,4 @@
-/*LUIS CASTELLAR CONTENT / COPYRIGHT*/
+/*LUIS CASTELLAR DOMINGUEZ / COPYRIGHT*/
 
 #include "CharacterAnimInstance.h"
 #include "BaseCharacter.h"

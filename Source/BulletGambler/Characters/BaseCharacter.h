@@ -1,4 +1,4 @@
-/*LUIS CASTELLAR CONTENT / COPYRIGHT*/
+/*LUIS CASTELLAR DOMINGUEZ / COPYRIGHT*/
 
 #pragma once
 
@@ -49,4 +49,7 @@ class BULLETGAMBLER_API ABaseCharacter : public ACharacter
 
 		UPROPERTY(VisibleAnywhere, Category = "Camera")
 		class UCameraComponent* FollowCamera;
+
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+		class UWidgetComponent* OverheadWidget;
 };

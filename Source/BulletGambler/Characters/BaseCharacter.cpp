@@ -1,9 +1,10 @@
-/*LUIS CASTELLAR CONTENT / COPYRIGHT*/
+/*LUIS CASTELLAR DOMINGUEZ / COPYRIGHT*/
 
 #include "BaseCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Components/WidgetComponent.h"
 #include "InputMappingContext.h"
 #include "InputAction.h"
 #include "Camera/CameraComponent.h"
@@ -12,6 +13,8 @@
 ABaseCharacter::ABaseCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	bReplicates = true;
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(GetMesh());
@@ -22,7 +25,8 @@ ABaseCharacter::ABaseCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
 
-	bReplicates = true;
+	OverheadWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("OverheadWidget")); 
+	OverheadWidget->SetupAttachment(RootComponent);
 
 	//bUseControllerRotationYaw = false;
 	//GetCharacterMovement()->bOrientRotationToMovement = true;
