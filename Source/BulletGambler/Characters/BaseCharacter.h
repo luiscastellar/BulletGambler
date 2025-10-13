@@ -1,4 +1,4 @@
-/*LUIS CASTELLAR DOMINGUEZ / COPYRIGHT*/
+//LUIS CASTELLAR DOMINGUEZ / COPYRIGHT
 
 #pragma once
 
@@ -21,9 +21,9 @@ class BULLETGAMBLER_API ABaseCharacter : public ACharacter
 
 		ABaseCharacter();
 
-		virtual void Tick(float DeltaTime) override;
-
 		virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+		virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	protected:
 
@@ -52,4 +52,17 @@ class BULLETGAMBLER_API ABaseCharacter : public ACharacter
 
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		class UWidgetComponent* OverheadWidget;
+
+		UPROPERTY(ReplicatedUsing = OnRep_OverlappingWeapon)
+		class ABaseWeapon* OverlappingWeapon;
+
+		UFUNCTION()
+		void OnRep_OverlappingWeapon(ABaseWeapon* LastWeapon);
+
+		UPROPERTY(EditAnywhere)
+		class UCombatComponent* CombatComponent;
+
+	public:
+
+		void SetOverlappingWeapon(ABaseWeapon* Weapon);
 };

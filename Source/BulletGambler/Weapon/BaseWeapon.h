@@ -1,4 +1,4 @@
-/*LUIS CASTELLAR DOMINGUEZ / COPYRIGHT*/
+//LUIS CASTELLAR DOMINGUEZ / COPYRIGHT
 
 #pragma once
 
@@ -25,7 +25,7 @@ public:
 
 	ABaseWeapon();
 
-	virtual void Tick(float DeltaTime) override;
+	void ShowPickupWidget(bool bShowWidget);
 
 protected:
 
@@ -39,6 +39,13 @@ protected:
 		int32 OtherBodyIndex,
 		bool bFromSweep,
 		const FHitResult& SweepResult);
+
+	UFUNCTION()
+	virtual void OnSphereEndOverlap(
+		UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex);
 
 private:
 

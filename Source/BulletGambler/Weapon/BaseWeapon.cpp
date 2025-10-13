@@ -1,4 +1,4 @@
-/*LUIS CASTELLAR DOMINGUEZ / COPYRIGHT*/
+//LUIS CASTELLAR DOMINGUEZ / COPYRIGHT
 
 #include "BaseWeapon.h"
 #include "Components/SphereComponent.h"
@@ -7,7 +7,7 @@
 
 ABaseWeapon::ABaseWeapon()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	bReplicates = true;
 
@@ -32,12 +32,13 @@ void ABaseWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	//if (HasAuthority())
-	//{
-	//	AreaSphere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	//	AreaSphere->SetCollisionResponseToChannel(ECC_Pawn, ECollisionResponse::ECR_Overlap);
-	//	AreaSphere->OnComponentBeginOverlap.AddDynamic(this, &ABaseWeapon::OnSphereOverlap);
-	//} 
+	if (HasAuthority())
+	{
+		AreaSphere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		AreaSphere->SetCollisionResponseToChannel(ECC_Pawn, ECollisionResponse::ECR_Overlap);
+		AreaSphere->OnComponentBeginOverlap.AddDynamic(this, &ABaseWeapon::OnSphereOverlap);
+		AreaSphere->OnComponentEndOverlap.AddDynamic(this, &ABaseWeapon::OnSphereEndOverlap);
+	} 
 
 	if (PickupWidget)
 	{
@@ -48,16 +49,26 @@ void ABaseWeapon::BeginPlay()
 void ABaseWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	ABaseCharacter* BaseCharacter = Cast<ABaseCharacter>(OtherActor);
-	if (BaseCharacter && PickupWidget)
+	if (BaseCharacter)
 	{
-		PickupWidget->SetVisibility(true);
+		BaseCharacter->SetOverlappingWeapon(this);
 	}
 
 }
 
-void ABaseWeapon::Tick(float DeltaTime)
+void ABaseWeapon::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	Super::Tick(DeltaTime);
-
+	ABaseCharacter* BaseCharacter = Cast<ABaseCharacter>(OtherActor);
+	if (BaseCharacter)
+	{
+		BaseCharacter->SetOverlappingWeapon(nullptr);
+	}
 }
 
+void ABaseWeapon::ShowPickupWidget(bool bShowWidget)
+{
+	if (PickupWidget)
+	{
+		PickupWidget->SetVisibility(bShowWidget);
+	}
+}
