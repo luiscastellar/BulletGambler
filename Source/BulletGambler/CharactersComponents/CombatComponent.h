@@ -18,6 +18,8 @@ class BULLETGAMBLER_API UCombatComponent : public UActorComponent
 
 		friend class ABaseCharacter;
 
+		virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 		void EquipWeapon(class ABaseWeapon* WeaponToEquip);
 
 	protected:
@@ -27,5 +29,9 @@ class BULLETGAMBLER_API UCombatComponent : public UActorComponent
 	private:	
 		
 		class ABaseCharacter* Character;
+
+		UPROPERTY(Replicated)
 		ABaseWeapon* EquippedWeapon;
+
+		bool bAiming;
 };

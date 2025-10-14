@@ -29,6 +29,7 @@ void UCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	VerticalSpeed = FVector::DotProduct(BaseCharacter->GetActorRightVector(), Velocity);
 
 	bIsInAir = BaseCharacter->GetMovementComponent()->IsFalling();
-
 	bIsAccelerating = BaseCharacter->GetCharacterMovement()->GetCurrentAcceleration().Size() > 0.f ? true : false;
+	bWeaponEquipped = BaseCharacter->IsWeaponEquipped();
+	bAiming = BaseCharacter->IsAiming();
 }

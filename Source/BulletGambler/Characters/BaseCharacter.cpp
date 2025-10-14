@@ -86,6 +86,8 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInput->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
 		EnhancedInput->BindAction(EquipAction, ETriggerEvent::Started, this, &ABaseCharacter::EquipButtonPressed);
+		EnhancedInput->BindAction(AimAction, ETriggerEvent::Started, this, &ABaseCharacter::AimButtonPressed);
+		EnhancedInput->BindAction(AimAction, ETriggerEvent::Completed, this, &ABaseCharacter::AimButtonReleased);
 	}
 }
 
@@ -105,7 +107,43 @@ void ABaseCharacter::Look(const FInputActionValue& Value)
 
 void ABaseCharacter::EquipButtonPressed()
 {
-	if (CombatComponent && HasAuthority())
+	if (CombatComponent)
+	{
+		if (HasAuthority())
+		{
+			CombatComponent->EquipWeapon(OverlappingWeapon);
+		}
+		else
+		{
+			ServerEquipButtonPressed();
+
+		}
+	}
+}
+
+void ABaseCharacter::AimButtonPressed()
+{
+	if (CombatComponent)
+	{
+		CombatComponent->bAiming = true;
+
+		CameraBoom->TargetArmLength = 300.0f;
+	}
+}
+
+void ABaseCharacter::AimButtonReleased()
+{
+	if (CombatComponent)
+	{
+		CombatComponent->bAiming = false;
+
+		CameraBoom->TargetArmLength = 600.0f;
+	}
+}
+
+void ABaseCharacter::ServerEquipButtonPressed_Implementation()
+{
+	if (CombatComponent)
 	{
 		CombatComponent->EquipWeapon(OverlappingWeapon);
 	}
@@ -125,6 +163,16 @@ void ABaseCharacter::SetOverlappingWeapon(ABaseWeapon* Weapon)
 			OverlappingWeapon->ShowPickupWidget(true);
 		}
 	}
+}
+
+bool ABaseCharacter::IsWeaponEquipped()
+{
+	return (CombatComponent && CombatComponent->EquippedWeapon);
+}
+
+bool ABaseCharacter::IsAiming()
+{
+	return (CombatComponent && CombatComponent->bAiming);
 }
 
 void ABaseCharacter::OnRep_OverlappingWeapon(ABaseWeapon* LastWeapon)

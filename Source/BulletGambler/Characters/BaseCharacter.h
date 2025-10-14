@@ -40,14 +40,17 @@ class BULLETGAMBLER_API ABaseCharacter : public ACharacter
 		UInputAction* LookAction;
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 		UInputAction* JumpAction;
-
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 		UInputAction* EquipAction;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+		UInputAction* AimAction;
 
 		void Move(const FInputActionValue& Value);
 		void Look(const FInputActionValue& Value);
 
 		void EquipButtonPressed();
+		void AimButtonPressed();
+		void AimButtonReleased();
 
 	private:
 
@@ -72,9 +75,16 @@ class BULLETGAMBLER_API ABaseCharacter : public ACharacter
 		UPROPERTY(VisibleAnywhere, Category = "Combat")
 		USceneComponent* WeaponAttachPoint;
 
+		UFUNCTION(Server, Reliable)
+		void ServerEquipButtonPressed();
+
 	public:
 
 		void SetOverlappingWeapon(ABaseWeapon* Weapon);
+
+		bool IsWeaponEquipped();
+
+		bool IsAiming();
 
 		USceneComponent* GetWeaponAttachPoint() const { return WeaponAttachPoint; }
 };

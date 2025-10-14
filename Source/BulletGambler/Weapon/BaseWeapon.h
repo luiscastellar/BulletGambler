@@ -9,11 +9,11 @@
 UENUM(BlueprintType)
 enum class EWeaponState : uint8
 {
-	EWT_Initial UMETA(DisplayName = "Initial State"),
-	EWT_Equipped UMETA(DisplayName = "Equipped"),
-	EWT_Dropped UMETA(DisplayName = "Dropped"),
+	EWS_Initial UMETA(DisplayName = "Initial State"),
+	EWS_Equipped UMETA(DisplayName = "Equipped"),
+	EWS_Dropped UMETA(DisplayName = "Dropped"),
 
-	EWT_MAX UMETA(DisplayName = "DefaultMAX")
+	EWS_MAX UMETA(DisplayName = "DefaultMAX")
 };
 
 UCLASS()
@@ -24,6 +24,8 @@ class BULLETGAMBLER_API ABaseWeapon : public AActor
 	public:	
 
 		ABaseWeapon();
+
+		virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 		void ShowPickupWidget(bool bShowWidget);
 
@@ -53,15 +55,19 @@ class BULLETGAMBLER_API ABaseWeapon : public AActor
 		UStaticMeshComponent* WeaponMesh;
 
 		UPROPERTY(VisibleAnywhere, Category = "Weapon properties")
-		class USphereComponent* AreaSphere;
+		class USphereComponent* AreaSphere; 
 
-		UPROPERTY(VisibleAnywhere, Category = "Weapon properties")
+		UPROPERTY(ReplicatedUsing = OnRep_WeaponState, VisibleAnywhere, Category = "Weapon properties")
 		EWeaponState WeaponState;
+
+		UFUNCTION()
+		void OnRep_WeaponState();
 
 		UPROPERTY(VisibleAnywhere, Category = "Weapon properties")
 		class UWidgetComponent* PickupWidget;
 
 	public:
 
-		FORCEINLINE void SetWeaponState(EWeaponState State) { WeaponState = State; }
+		void SetWeaponState(EWeaponState State);
+		FORCEINLINE USphereComponent* GetAreaSphere() const { return AreaSphere; }
 };

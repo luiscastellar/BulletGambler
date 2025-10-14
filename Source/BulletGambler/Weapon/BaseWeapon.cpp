@@ -4,6 +4,7 @@
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
 #include "BulletGambler/Characters/BaseCharacter.h"
+#include <Net/UnrealNetwork.h>
 
 ABaseWeapon::ABaseWeapon()
 {
@@ -26,6 +27,13 @@ ABaseWeapon::ABaseWeapon()
 
 	PickupWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("PickupWidget"));
 	PickupWidget->SetupAttachment(RootComponent);
+}
+
+void ABaseWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ABaseWeapon, WeaponState);
 }
 
 void ABaseWeapon::BeginPlay()
@@ -62,6 +70,31 @@ void ABaseWeapon::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, A
 	if (BaseCharacter)
 	{
 		BaseCharacter->SetOverlappingWeapon(nullptr);
+	}
+}
+
+void ABaseWeapon::OnRep_WeaponState()
+{
+	switch (WeaponState)
+	{
+		case EWeaponState::EWS_Equipped:
+
+			ShowPickupWidget(false);
+			break;
+	}
+}
+
+void ABaseWeapon::SetWeaponState(EWeaponState State)
+{
+	WeaponState = State;
+
+	switch (WeaponState)
+	{
+		case EWeaponState::EWS_Equipped:
+
+			ShowPickupWidget(false);
+			AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			break;
 	}
 }
 
