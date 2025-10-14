@@ -12,17 +12,20 @@ class BULLETGAMBLER_API UCombatComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
-	// Sets default values for this component's properties
-	UCombatComponent();
+	public:	
 
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
+		UCombatComponent();
 
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+		friend class ABaseCharacter;
 
+		void EquipWeapon(class ABaseWeapon* WeaponToEquip);
+
+	protected:
+
+		virtual void BeginPlay() override;
+
+	private:	
 		
+		class ABaseCharacter* Character;
+		ABaseWeapon* EquippedWeapon;
 };

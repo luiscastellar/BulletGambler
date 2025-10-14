@@ -25,6 +25,8 @@ class BULLETGAMBLER_API ABaseCharacter : public ACharacter
 
 		virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
+		virtual void PostInitializeComponents() override;
+
 	protected:
 
 		virtual void BeginPlay() override;
@@ -39,8 +41,13 @@ class BULLETGAMBLER_API ABaseCharacter : public ACharacter
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 		UInputAction* JumpAction;
 
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+		UInputAction* EquipAction;
+
 		void Move(const FInputActionValue& Value);
 		void Look(const FInputActionValue& Value);
+
+		void EquipButtonPressed();
 
 	private:
 
@@ -56,13 +63,18 @@ class BULLETGAMBLER_API ABaseCharacter : public ACharacter
 		UPROPERTY(ReplicatedUsing = OnRep_OverlappingWeapon)
 		class ABaseWeapon* OverlappingWeapon;
 
+		UPROPERTY(EditAnywhere)
+		class UCombatComponent* CombatComponent;
+
 		UFUNCTION()
 		void OnRep_OverlappingWeapon(ABaseWeapon* LastWeapon);
 
-		UPROPERTY(EditAnywhere)
-		class UCombatComponent* CombatComponent;
+		UPROPERTY(VisibleAnywhere, Category = "Combat")
+		USceneComponent* WeaponAttachPoint;
 
 	public:
 
 		void SetOverlappingWeapon(ABaseWeapon* Weapon);
+
+		USceneComponent* GetWeaponAttachPoint() const { return WeaponAttachPoint; }
 };

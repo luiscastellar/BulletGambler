@@ -1,6 +1,9 @@
 //LUIS CASTELLAR DOMINGUEZ / COPYRIGHT
 
 #include "CombatComponent.h"
+#include "BulletGambler/Weapon/BaseWeapon.h"
+#include "BulletGambler/Characters/BaseCharacter.h"
+#include "Engine/StaticMeshSocket.h"
 
 UCombatComponent::UCombatComponent()
 {
@@ -9,19 +12,25 @@ UCombatComponent::UCombatComponent()
 
 }
 
-
-// Called when the game starts
 void UCombatComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
 }
 
-
-// Called every frame
-void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UCombatComponent::EquipWeapon(ABaseWeapon* WeaponToEquip)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	if (Character == nullptr || WeaponToEquip == nullptr) return;
 
+	EquippedWeapon = WeaponToEquip;
+	EquippedWeapon->SetWeaponState(EWeaponState::EWT_Equipped);
+
+	EquippedWeapon->AttachToComponent(
+		Character->GetWeaponAttachPoint(),
+		FAttachmentTransformRules::SnapToTargetNotIncludingScale
+	);
+
+	EquippedWeapon->SetOwner(Character);
+	EquippedWeapon->ShowPickupWidget(false);
 }
 

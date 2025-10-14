@@ -21,43 +21,47 @@ class BULLETGAMBLER_API ABaseWeapon : public AActor
 {
 	GENERATED_BODY()
 	
-public:	
+	public:	
 
-	ABaseWeapon();
+		ABaseWeapon();
 
-	void ShowPickupWidget(bool bShowWidget);
+		void ShowPickupWidget(bool bShowWidget);
 
-protected:
+	protected:
 
-	virtual void BeginPlay() override;
+		virtual void BeginPlay() override;
 
-	UFUNCTION()
-	virtual void OnSphereOverlap(
-		UPrimitiveComponent* OverlappedComponent,
-		AActor* OtherActor,
-		UPrimitiveComponent* OtherComp,
-		int32 OtherBodyIndex,
-		bool bFromSweep,
-		const FHitResult& SweepResult);
+		UFUNCTION()
+		virtual void OnSphereOverlap(
+			UPrimitiveComponent* OverlappedComponent,
+			AActor* OtherActor,
+			UPrimitiveComponent* OtherComp,
+			int32 OtherBodyIndex,
+			bool bFromSweep,
+			const FHitResult& SweepResult);
 
-	UFUNCTION()
-	virtual void OnSphereEndOverlap(
-		UPrimitiveComponent* OverlappedComponent,
-		AActor* OtherActor,
-		UPrimitiveComponent* OtherComp,
-		int32 OtherBodyIndex);
+		UFUNCTION()
+		virtual void OnSphereEndOverlap(
+			UPrimitiveComponent* OverlappedComponent,
+			AActor* OtherActor,
+			UPrimitiveComponent* OtherComp,
+			int32 OtherBodyIndex);
 
-private:
+	private:
 
-	UPROPERTY(VisibleAnywhere, Category = "Weapon properties")
-	UStaticMeshComponent* WeaponMesh;
+		UPROPERTY(VisibleAnywhere, Category = "Weapon properties")
+		UStaticMeshComponent* WeaponMesh;
 
-	UPROPERTY(VisibleAnywhere, Category = "Weapon properties")
-	class USphereComponent* AreaSphere;
+		UPROPERTY(VisibleAnywhere, Category = "Weapon properties")
+		class USphereComponent* AreaSphere;
 
-	UPROPERTY(VisibleAnywhere, Category = "Weapon properties")
-	EWeaponState WeaponState;
+		UPROPERTY(VisibleAnywhere, Category = "Weapon properties")
+		EWeaponState WeaponState;
 
-	UPROPERTY(VisibleAnywhere, Category = "Weapon properties")
-	class UWidgetComponent* PickupWidget;
+		UPROPERTY(VisibleAnywhere, Category = "Weapon properties")
+		class UWidgetComponent* PickupWidget;
+
+	public:
+
+		FORCEINLINE void SetWeaponState(EWeaponState State) { WeaponState = State; }
 };
