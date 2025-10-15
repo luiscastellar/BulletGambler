@@ -25,6 +25,10 @@ class BULLETGAMBLER_API UCombatComponent : public UActorComponent
 	protected:
 
 		virtual void BeginPlay() override;
+		void SetAiming(bool bIsAiming);
+
+		UFUNCTION(Server, Reliable)
+		void ServerSetAiming(bool bIsAiming);
 
 	private:	
 		
@@ -33,5 +37,12 @@ class BULLETGAMBLER_API UCombatComponent : public UActorComponent
 		UPROPERTY(Replicated)
 		ABaseWeapon* EquippedWeapon;
 
+		UPROPERTY(Replicated)
 		bool bAiming;
+
+		UPROPERTY(EditAnywhere)
+		float BaseWalkSpeed;
+
+		UPROPERTY(EditAnywhere)
+		float AimWalkSpeed;
 };

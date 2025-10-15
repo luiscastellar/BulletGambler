@@ -11,6 +11,7 @@
 #include "InputAction.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Net/UnrealNetwork.h"
 
 ABaseCharacter::ABaseCharacter()
@@ -36,6 +37,9 @@ ABaseCharacter::ABaseCharacter()
 
 	WeaponAttachPoint = CreateDefaultSubobject<USceneComponent>(TEXT("WeaponAttachPoint"));
 	WeaponAttachPoint->SetupAttachment(GetMesh());
+
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 
 	//bUseControllerRotationYaw = false;
 	//GetCharacterMovement()->bOrientRotationToMovement = true;
@@ -125,7 +129,7 @@ void ABaseCharacter::AimButtonPressed()
 {
 	if (CombatComponent)
 	{
-		CombatComponent->bAiming = true;
+		CombatComponent->SetAiming(true);
 
 		CameraBoom->TargetArmLength = 300.0f;
 	}
@@ -135,7 +139,7 @@ void ABaseCharacter::AimButtonReleased()
 {
 	if (CombatComponent)
 	{
-		CombatComponent->bAiming = false;
+		CombatComponent->SetAiming(false);
 
 		CameraBoom->TargetArmLength = 600.0f;
 	}
