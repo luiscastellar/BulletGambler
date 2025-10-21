@@ -30,6 +30,8 @@ class BULLETGAMBLER_API UCombatComponent : public UActorComponent
 		UFUNCTION(Server, Reliable)
 		void ServerSetAiming(bool bIsAiming);
 
+		void FireButtonPressed(bool bPressed);
+
 	private:	
 		
 		class ABaseCharacter* Character;
@@ -45,4 +47,6 @@ class BULLETGAMBLER_API UCombatComponent : public UActorComponent
 
 		UPROPERTY(EditAnywhere)
 		float AimWalkSpeed;
+
+		bool bFireButtonPressed;
 };

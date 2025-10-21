@@ -12,6 +12,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "CharacterAnimInstance.h"
 #include "Net/UnrealNetwork.h"
 
 ABaseCharacter::ABaseCharacter()
@@ -41,6 +42,9 @@ ABaseCharacter::ABaseCharacter()
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 
+	NetUpdateFrequency = 66.f;
+	MinNetUpdateFrequency = 33.f;
+
 	//bUseControllerRotationYaw = false;
 	//GetCharacterMovement()->bOrientRotationToMovement = true;
 }
@@ -53,8 +57,20 @@ void ABaseCharacter::PostInitializeComponents()
 	{
 		CombatComponent->Character = this;
 	}
-
 }
+
+//void ABaseCharacter::PlayFireMontage(bool bAiming)
+//{
+//	if (CombatComponent == nullptr || CombatComponent->EquippedWeapon == nullptr) return;
+//
+//	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+//	if (AnimInstance && FireMontage)
+//	{
+//		AnimInstance->Montage_Play(FireMontage);
+//		FName SectionName = bAiming ? FName("NormalAttack") : FName("RotatingAttack");
+//		AnimInstance->Montage_JumpToSection(SectionName);
+//	}
+//}
 
 void ABaseCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
@@ -92,6 +108,8 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInput->BindAction(EquipAction, ETriggerEvent::Started, this, &ABaseCharacter::EquipButtonPressed);
 		EnhancedInput->BindAction(AimAction, ETriggerEvent::Started, this, &ABaseCharacter::AimButtonPressed);
 		EnhancedInput->BindAction(AimAction, ETriggerEvent::Completed, this, &ABaseCharacter::AimButtonReleased);
+		EnhancedInput->BindAction(FireAction, ETriggerEvent::Started, this, &ABaseCharacter::FireButtonPressed);
+		EnhancedInput->BindAction(FireAction, ETriggerEvent::Completed, this, &ABaseCharacter::FireButtonReleased);
 	}
 }
 
@@ -120,7 +138,6 @@ void ABaseCharacter::EquipButtonPressed()
 		else
 		{
 			ServerEquipButtonPressed();
-
 		}
 	}
 }
@@ -142,6 +159,22 @@ void ABaseCharacter::AimButtonReleased()
 		CombatComponent->SetAiming(false);
 
 		CameraBoom->TargetArmLength = 600.0f;
+	}
+}
+
+void ABaseCharacter::FireButtonPressed()
+{
+	if (CombatComponent)
+	{
+		CombatComponent->FireButtonPressed(true);
+	}
+}
+
+void ABaseCharacter::FireButtonReleased()
+{
+	if (CombatComponent)
+	{
+		CombatComponent->FireButtonPressed(false);
 	}
 }
 
@@ -177,6 +210,17 @@ bool ABaseCharacter::IsWeaponEquipped()
 bool ABaseCharacter::IsAiming()
 {
 	return (CombatComponent && CombatComponent->bAiming);
+}
+
+bool ABaseCharacter::IsFireButtonPressed()
+{
+	if (GEngine) 
+	{
+		FString Mensaje = CombatComponent->bFireButtonPressed ? TEXT("bEstaActivo = true") : TEXT("bEstaActivo = false");
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, Mensaje);
+	}
+
+	return (CombatComponent && CombatComponent->bFireButtonPressed);
 }
 
 void ABaseCharacter::OnRep_OverlappingWeapon(ABaseWeapon* LastWeapon)

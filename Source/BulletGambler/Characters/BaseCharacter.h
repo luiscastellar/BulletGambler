@@ -27,6 +27,8 @@ class BULLETGAMBLER_API ABaseCharacter : public ACharacter
 
 		virtual void PostInitializeComponents() override;
 
+		//void PlayFireMontage(bool bAiming);
+
 	protected:
 
 		virtual void BeginPlay() override;
@@ -44,6 +46,8 @@ class BULLETGAMBLER_API ABaseCharacter : public ACharacter
 		UInputAction* EquipAction;
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 		UInputAction* AimAction;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+		UInputAction* FireAction;
 
 		void Move(const FInputActionValue& Value);
 		void Look(const FInputActionValue& Value);
@@ -51,6 +55,8 @@ class BULLETGAMBLER_API ABaseCharacter : public ACharacter
 		void EquipButtonPressed();
 		void AimButtonPressed();
 		void AimButtonReleased();
+		void FireButtonPressed();
+		void FireButtonReleased();
 
 	private:
 
@@ -85,6 +91,8 @@ class BULLETGAMBLER_API ABaseCharacter : public ACharacter
 		bool IsWeaponEquipped();
 
 		bool IsAiming();
+
+		bool IsFireButtonPressed();
 
 		USceneComponent* GetWeaponAttachPoint() const { return WeaponAttachPoint; }
 };
