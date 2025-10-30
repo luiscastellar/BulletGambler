@@ -29,6 +29,8 @@ class BULLETGAMBLER_API ABaseWeapon : public AActor
 
 		void ShowPickupWidget(bool bShowWidget);
 
+		virtual void Fire(const FVector& HitTarget);
+
 	protected:
 
 		virtual void BeginPlay() override;
@@ -48,6 +50,9 @@ class BULLETGAMBLER_API ABaseWeapon : public AActor
 			AActor* OtherActor,
 			UPrimitiveComponent* OtherComp,
 			int32 OtherBodyIndex);
+
+		UPROPERTY(VisibleAnywhere, Category = "Combat")
+		USceneComponent* SpawnPoint;
 
 	private:
 

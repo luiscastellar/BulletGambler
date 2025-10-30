@@ -27,8 +27,6 @@ class BULLETGAMBLER_API ABaseCharacter : public ACharacter
 
 		virtual void PostInitializeComponents() override;
 
-		//void PlayFireMontage(bool bAiming);
-
 	protected:
 
 		virtual void BeginPlay() override;

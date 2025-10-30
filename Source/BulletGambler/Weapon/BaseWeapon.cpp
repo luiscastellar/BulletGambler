@@ -27,6 +27,9 @@ ABaseWeapon::ABaseWeapon()
 
 	PickupWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("PickupWidget"));
 	PickupWidget->SetupAttachment(RootComponent);
+
+	SpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("WeaponAttachPoint"));
+	SpawnPoint->SetupAttachment(GetRootComponent());
 }
 
 void ABaseWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -104,4 +107,9 @@ void ABaseWeapon::ShowPickupWidget(bool bShowWidget)
 	{
 		PickupWidget->SetVisibility(bShowWidget);
 	}
+}
+
+void ABaseWeapon::Fire(const FVector& HitTarget)
+{
+	//Overide in child classes
 }

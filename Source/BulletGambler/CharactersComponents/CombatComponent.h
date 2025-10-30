@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "CombatComponent.generated.h"
 
+#define TRACE_LENGTH 80000.f
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BULLETGAMBLER_API UCombatComponent : public UActorComponent
@@ -25,12 +26,21 @@ class BULLETGAMBLER_API UCombatComponent : public UActorComponent
 	protected:
 
 		virtual void BeginPlay() override;
+		virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 		void SetAiming(bool bIsAiming);
 
 		UFUNCTION(Server, Reliable)
 		void ServerSetAiming(bool bIsAiming);
 
 		void FireButtonPressed(bool bPressed);
+
+		UFUNCTION(Server, Reliable)
+		void ServerFire();
+
+		UFUNCTION(NetMulticast, Reliable)
+		void MulticastFire();
+
+		void TraceUnderCrosshairs(FHitResult& TraceHitResult);
 
 	private:	
 		
@@ -49,4 +59,6 @@ class BULLETGAMBLER_API UCombatComponent : public UActorComponent
 		float AimWalkSpeed;
 
 		bool bFireButtonPressed;
+
+		FVector HitTarget;
 };

@@ -59,19 +59,6 @@ void ABaseCharacter::PostInitializeComponents()
 	}
 }
 
-//void ABaseCharacter::PlayFireMontage(bool bAiming)
-//{
-//	if (CombatComponent == nullptr || CombatComponent->EquippedWeapon == nullptr) return;
-//
-//	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-//	if (AnimInstance && FireMontage)
-//	{
-//		AnimInstance->Montage_Play(FireMontage);
-//		FName SectionName = bAiming ? FName("NormalAttack") : FName("RotatingAttack");
-//		AnimInstance->Montage_JumpToSection(SectionName);
-//	}
-//}
-
 void ABaseCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
