@@ -201,12 +201,6 @@ bool ABaseCharacter::IsAiming()
 
 bool ABaseCharacter::IsFireButtonPressed()
 {
-	if (GEngine) 
-	{
-		FString Mensaje = CombatComponent->bFireButtonPressed ? TEXT("bEstaActivo = true") : TEXT("bEstaActivo = false");
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, Mensaje);
-	}
-
 	return (CombatComponent && CombatComponent->bFireButtonPressed);
 }
 

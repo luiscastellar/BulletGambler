@@ -61,4 +61,6 @@ class BULLETGAMBLER_API UCombatComponent : public UActorComponent
 		bool bFireButtonPressed;
 
 		FVector HitTarget;
+
+		FHitResult HitResult;
 };

@@ -15,13 +15,22 @@ class BULLETGAMBLER_API ABaseProjectile : public AActor
 
 		ABaseProjectile();
 
+		UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "VFX")
+		class UNiagaraSystem* ProjectileTrailNiagaraSystem;
+
 	protected:
 
 		virtual void BeginPlay() override;
 
-private:
+		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "VFX", meta = (AllowPrivateAccess = "true"))
+		class UNiagaraComponent* ProjectileTrailNiagaraComponent;
 
-	UPROPERTY(EditAnywhere, Category = "Projectile")
-	class UBoxComponent* CollisionBox;
+	private:
+
+		UPROPERTY(EditAnywhere, Category = "Projectile")
+		class UBoxComponent* CollisionBox;
+
+		UPROPERTY(EditAnywhere, Category = "Projectile")
+		class UProjectileMovementComponent* ProjectileMovementComponent;
 
 };

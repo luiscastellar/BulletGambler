@@ -7,7 +7,6 @@
 #include "Engine/StaticMeshSocket.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "DrawDebugHelpers.h"
 #include <Net/UnrealNetwork.h>
 
 
@@ -47,8 +46,7 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	FHitResult TraceHitResult;
-	TraceUnderCrosshairs(TraceHitResult);
+	TraceUnderCrosshairs(HitResult);
 }
 
 void UCombatComponent::SetAiming(bool bIsAiming)
@@ -59,7 +57,6 @@ void UCombatComponent::SetAiming(bool bIsAiming)
 	{
 		Character->GetCharacterMovement()->MaxWalkSpeed = bAiming ? AimWalkSpeed : BaseWalkSpeed;
 	}
-
 }
 
 void UCombatComponent::FireButtonPressed(bool bPressed)
@@ -111,15 +108,6 @@ void UCombatComponent::TraceUnderCrosshairs(FHitResult& TraceHitResult)
 		else
 		{
 			HitTarget = TraceHitResult.ImpactPoint;
-			DrawDebugSphere(
-				GetWorld(),
-				TraceHitResult.ImpactPoint,
-				16.f,
-				12,
-				FColor::Red,
-				false,
-				2.f
-			);
 		}
 	}
 }
