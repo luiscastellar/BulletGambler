@@ -1,4 +1,4 @@
-/*LUIS CASTELLAR CONTENT / COPYRIGHT*/
+/*LUIS CASTELLAR DOMINGUEZ / COPYRIGHT*/
 
 #pragma once
 
@@ -11,28 +11,37 @@ class BULLETGAMBLER_API UCharacterAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 	
-public:
+	public:
 
-	virtual void NativeInitializeAnimation() override;
-	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+		virtual void NativeInitializeAnimation() override;
+		virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
-private:
+	private:
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
-	class ABaseCharacter* BaseCharacter;
+		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+		class ABaseCharacter* BaseCharacter;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
-	float Speed;
+		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+		float Speed;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
-	bool bIsInAir;
+		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+		bool bIsInAir;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
-	bool bIsAccelerating;
+		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+		bool bIsAccelerating;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
-	float HorizontalSpeed;
+		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+		float HorizontalSpeed;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
-	float VerticalSpeed;
+		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+		float VerticalSpeed;
+
+		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+		bool bWeaponEquipped;
+
+		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+		bool bAiming;
+
+		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+		bool bShooting;
 };

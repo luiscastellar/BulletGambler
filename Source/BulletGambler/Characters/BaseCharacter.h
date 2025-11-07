@@ -1,4 +1,4 @@
-/*LUIS CASTELLAR CONTENT / COPYRIGHT*/
+//LUIS CASTELLAR DOMINGUEZ / COPYRIGHT
 
 #pragma once
 
@@ -21,9 +21,11 @@ class BULLETGAMBLER_API ABaseCharacter : public ACharacter
 
 		ABaseCharacter();
 
-		virtual void Tick(float DeltaTime) override;
-
 		virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+		virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+		virtual void PostInitializeComponents() override;
 
 	protected:
 
@@ -38,9 +40,21 @@ class BULLETGAMBLER_API ABaseCharacter : public ACharacter
 		UInputAction* LookAction;
 		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 		UInputAction* JumpAction;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+		UInputAction* EquipAction;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+		UInputAction* AimAction;
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+		UInputAction* FireAction;
 
 		void Move(const FInputActionValue& Value);
 		void Look(const FInputActionValue& Value);
+
+		void EquipButtonPressed();
+		void AimButtonPressed();
+		void AimButtonReleased();
+		void FireButtonPressed();
+		void FireButtonReleased();
 
 	private:
 
@@ -49,4 +63,34 @@ class BULLETGAMBLER_API ABaseCharacter : public ACharacter
 
 		UPROPERTY(VisibleAnywhere, Category = "Camera")
 		class UCameraComponent* FollowCamera;
+
+		UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+		class UWidgetComponent* OverheadWidget;
+
+		UPROPERTY(ReplicatedUsing = OnRep_OverlappingWeapon)
+		class ABaseWeapon* OverlappingWeapon;
+
+		UPROPERTY(EditAnywhere)
+		class UCombatComponent* CombatComponent;
+
+		UFUNCTION()
+		void OnRep_OverlappingWeapon(ABaseWeapon* LastWeapon);
+
+		UPROPERTY(VisibleAnywhere, Category = "Combat")
+		USceneComponent* WeaponAttachPoint;
+
+		UFUNCTION(Server, Reliable)
+		void ServerEquipButtonPressed();
+
+	public:
+
+		void SetOverlappingWeapon(ABaseWeapon* Weapon);
+
+		bool IsWeaponEquipped();
+
+		bool IsAiming();
+
+		bool IsFireButtonPressed();
+
+		USceneComponent* GetWeaponAttachPoint() const { return WeaponAttachPoint; }
 };

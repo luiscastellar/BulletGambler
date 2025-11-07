@@ -1,0 +1,115 @@
+//LUIS CASTELLAR DOMINGUEZ / COPYRIGHT
+
+#include "BaseWeapon.h"
+#include "Components/SphereComponent.h"
+#include "Components/WidgetComponent.h"
+#include "BulletGambler/Characters/BaseCharacter.h"
+#include <Net/UnrealNetwork.h>
+
+ABaseWeapon::ABaseWeapon()
+{
+	PrimaryActorTick.bCanEverTick = false;
+
+	bReplicates = true;
+
+	WeaponMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeaponMesh"));
+	WeaponMesh->SetupAttachment(RootComponent);
+	SetRootComponent(WeaponMesh);
+
+	WeaponMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
+	WeaponMesh->SetCollisionResponseToChannel(ECC_Pawn, ECollisionResponse::ECR_Ignore);
+	WeaponMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	AreaSphere = CreateDefaultSubobject<USphereComponent>(TEXT("AreaSphere"));
+	AreaSphere->SetupAttachment(RootComponent);
+	AreaSphere->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	PickupWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("PickupWidget"));
+	PickupWidget->SetupAttachment(RootComponent);
+
+	SpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("WeaponAttachPoint"));
+	SpawnPoint->SetupAttachment(GetRootComponent());
+}
+
+void ABaseWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ABaseWeapon, WeaponState);
+}
+
+void ABaseWeapon::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	if (HasAuthority())
+	{
+		AreaSphere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		AreaSphere->SetCollisionResponseToChannel(ECC_Pawn, ECollisionResponse::ECR_Overlap);
+		AreaSphere->OnComponentBeginOverlap.AddDynamic(this, &ABaseWeapon::OnSphereOverlap);
+		AreaSphere->OnComponentEndOverlap.AddDynamic(this, &ABaseWeapon::OnSphereEndOverlap);
+	} 
+
+	if (PickupWidget)
+	{
+		PickupWidget->SetVisibility(false);
+	}
+}
+
+void ABaseWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	ABaseCharacter* BaseCharacter = Cast<ABaseCharacter>(OtherActor);
+	if (BaseCharacter)
+	{
+		BaseCharacter->SetOverlappingWeapon(this);
+	}
+
+}
+
+void ABaseWeapon::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	ABaseCharacter* BaseCharacter = Cast<ABaseCharacter>(OtherActor);
+	if (BaseCharacter)
+	{
+		BaseCharacter->SetOverlappingWeapon(nullptr);
+	}
+}
+
+void ABaseWeapon::OnRep_WeaponState()
+{
+	switch (WeaponState)
+	{
+		case EWeaponState::EWS_Equipped:
+
+			ShowPickupWidget(false);
+			break;
+	}
+}
+
+void ABaseWeapon::SetWeaponState(EWeaponState State)
+{
+	WeaponState = State;
+
+	switch (WeaponState)
+	{
+		case EWeaponState::EWS_Equipped:
+
+			ShowPickupWidget(false);
+			AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			break;
+	}
+}
+
+void ABaseWeapon::ShowPickupWidget(bool bShowWidget)
+{
+	if (PickupWidget)
+	{
+		PickupWidget->SetVisibility(bShowWidget);
+	}
+}
+
+void ABaseWeapon::Fire(const FVector& HitTarget)
+{
+	//Overide in child classes
+}

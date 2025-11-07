@@ -1,4 +1,4 @@
-/*LUIS CASTELLAR CONTENT / COPYRIGHT*/
+/*LUIS CASTELLAR DOMINGUEZ / COPYRIGHT*/
 
 #include "BulletGamblerGameMode.h"
 #include "GameFramework/GameStateBase.h"
